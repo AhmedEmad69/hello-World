@@ -16,6 +16,9 @@ def evaluate():
         result = eval(entry.get())
         entry.delete(0, tk.END)
         entry.insert(tk.END, str(result))
+    except ZeroDivisionError:
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, "Error: Division by zero")
     except Exception as e:
         entry.delete(0, tk.END)
         entry.insert(tk.END, "Error")
@@ -71,6 +74,7 @@ if __name__ == "__main__":
 
 # Testing the calculator functions
 def test_calculator():
+    # Basic operations
     assert simulate_button_press("2") == "2", "Test failed for button press: 2"
     assert simulate_button_press("+") == "2+", "Test failed for button press: +"
     assert simulate_button_press("2") == "2+2", "Test failed for button press: 2"
@@ -79,6 +83,7 @@ def test_calculator():
     clear()
     assert entry.get() == "", "Test failed for clear function"
 
+    # Multiplication
     simulate_button_press("9")
     simulate_button_press("*")
     simulate_button_press("3")
@@ -86,6 +91,7 @@ def test_calculator():
     assert entry.get() == "27", "Test failed for expression: 9*3"
     clear()
 
+    # Division
     simulate_button_press("1")
     simulate_button_press("0")
     simulate_button_press("/")
@@ -94,6 +100,7 @@ def test_calculator():
     assert entry.get() == "5.0", "Test failed for expression: 10/2"
     clear()
 
+    # Order of operations
     simulate_button_press("7")
     simulate_button_press("+")
     simulate_button_press("2")
@@ -101,6 +108,26 @@ def test_calculator():
     simulate_button_press("3")
     simulate_button_press("=")
     assert entry.get() == "13", "Test failed for expression: 7+2*3"
+    clear()
+
+    # Division by zero
+    simulate_button_press("1")
+    simulate_button_press("/")
+    simulate_button_press("0")
+    simulate_button_press("=")
+    assert entry.get() == "Error: Division by zero", "Test failed for division by zero"
+    clear()
+
+    # Invalid input
+    simulate_button_press("+")
+    simulate_button_press("+")
+    simulate_button_press("=")
+    assert entry.get() == "Error", "Test failed for invalid input: ++"
+    clear()
+
+    # Empty input
+    simulate_button_press("=")
+    assert entry.get() == "Error", "Test failed for empty input"
     clear()
 
     print("All tests passed.")

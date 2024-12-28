@@ -31,6 +31,11 @@ def key_press(event):
         entry.delete(0, tk.END)
         entry.insert(tk.END, current[:-1])
 
+# Function to simulate button press for testing
+def simulate_button_press(value):
+    button_click(value)
+    return entry.get()
+
 # Setting up the main window
 root = tk.Tk()
 root.title("Cool Calculator")
@@ -66,11 +71,38 @@ if __name__ == "__main__":
 
 # Testing the calculator functions
 def test_calculator():
-    assert eval("2+2") == 4, "Test failed for expression: 2+2"
-    assert eval("10-5") == 5, "Test failed for expression: 10-5"
-    assert eval("3*3") == 9, "Test failed for expression: 3*3"
-    assert eval("8/2") == 4, "Test failed for expression: 8/2"
-    assert eval("7+2*3") == 13, "Test failed for expression: 7+2*3"
+    assert simulate_button_press("2") == "2", "Test failed for button press: 2"
+    assert simulate_button_press("+") == "2+", "Test failed for button press: +"
+    assert simulate_button_press("2") == "2+2", "Test failed for button press: 2"
+    simulate_button_press("=")
+    assert entry.get() == "4", "Test failed for expression: 2+2"
+    clear()
+    assert entry.get() == "", "Test failed for clear function"
+
+    simulate_button_press("9")
+    simulate_button_press("*")
+    simulate_button_press("3")
+    simulate_button_press("=")
+    assert entry.get() == "27", "Test failed for expression: 9*3"
+    clear()
+
+    simulate_button_press("1")
+    simulate_button_press("0")
+    simulate_button_press("/")
+    simulate_button_press("2")
+    simulate_button_press("=")
+    assert entry.get() == "5.0", "Test failed for expression: 10/2"
+    clear()
+
+    simulate_button_press("7")
+    simulate_button_press("+")
+    simulate_button_press("2")
+    simulate_button_press("*")
+    simulate_button_press("3")
+    simulate_button_press("=")
+    assert entry.get() == "13", "Test failed for expression: 7+2*3"
+    clear()
+
     print("All tests passed.")
 
 test_calculator()
